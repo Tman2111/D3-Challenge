@@ -23,6 +23,34 @@ var svg = d3
   var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
+  // Initial Param
+var chosenXAxis = "age";
+
+// function to update x-scale var when click on axis label
+function xScale(censusData, chosenXAxis) {
+  // create scales
+  var xLinearScale = d3.scaleLinear()
+    .domain([d3.min(censusData, d => d[chosenXAxis]) * 0.8,
+      d3.max(censusData, d => d[chosenXAxis]) * 1.2
+    ])
+    .range([0, width]);
+
+  return xLinearScale;
+
+}
+
+// function to update xAxis var upon click on axis label
+function renderAxes(newXScale, xAxis) {
+  var bottomAxis = d3.axisBottom(newXScale);
+
+  xAxis.transition()
+    .duration(1000)
+    .call(bottomAxis);
+
+  return xAxis;
+}
+
+
   (async function(){
     var censusData = await d3.csv("assets/data/data.csv").catch(err => console.log(err))
 
