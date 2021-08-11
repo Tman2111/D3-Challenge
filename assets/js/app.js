@@ -187,34 +187,30 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     });
 
     //console.log(censusData);
-
-  })()
     // console.log(chosenXAxis)
  
-
-// xLinearScale function above csv import
-var xLinearScale = xScale(censusData, chosenXAxis);
-
-// Create y scale function
-var yLinearScale = d3.scaleLinear()
-.domain([0, d3.max(censusData, d => d.income)])
-.range([height, 0]);
+    // xLinearScale and yLinearScale functions
+  var xLinearScale = xScale(censusData, chosenXAxis);
+  var yLinearScale = yScale(censusData, chosenYAxis);
 
 // Create initial axis functions
-var bottomAxis = d3.axisBottom(xLinearScale);
-var leftAxis = d3.axisLeft(yLinearScale);
+  var bottomAxis = d3.axisBottom(xLinearScale);
+  var leftAxis = d3.axisLeft(yLinearScale);
 
 // append x and y axis
-var xAxis = chartGroup.append("g")
+  var xAxis = chartGroup.append("g")
 .classed("x-axis", true)
 .attr("transform", `translate(0, ${height})`)
 .call(bottomAxis);
 
-chartGroup.append("g")
-.call(leftAxis);
+  var yAxis = chartGroup.append("g")
+        .classed("y-axis", true)
+        // .attr("transform")
+        .call(leftAxis);
 
 // intitial circles
-var circlesGroup = chartGroup.selectAll("circle")
+  var circlesGroup = chartGroup.append("g")
+      .selectAll("circle")
       .data(censusData)
       .enter()
       .append("circle")
@@ -222,35 +218,56 @@ var circlesGroup = chartGroup.selectAll("circle")
       .attr("cy", d => yLinearScale(d.income))
       .attr("r", 20)
       .attr("fill", "blue")
-      .attr("opacity", ".5");
+      .attr("opacity", ".4");
 
-      // Groups for two x-axis labels
+      var textCircles = chartGroup.append("g")
+      .selectAll("text")
+      .data(censusData)
+      .enter()
+      .append("text")
+      .text(d => d.abbr)
+      .attr("x", d => xLinearScale(d[chosenXAxis]))
+      .attr("y", d => yLinearScale(d[chosenYAxis]) + 4)
+      .attr("font-family", "calibri")
+      .attr("text-anchor", "middle")
+      .attr("font-size", "10px")
+      .style("fill", "white")
+      .attr("font-weight", "bold");
+
+      // Groups for three x-axis labels
       var labelsGroup = chartGroup.append("g")
         .attr("transform", `translate(${width / 2}, ${height + 20})`);
   
-      var ageLabel = labelsGroup.append("text")
+      var smokesLabel = labelsGroup.append("text")
         .attr("x", 0)
         .attr("y", 20)
-        .attr("value", "age") // value to grab for event listener
+        .attr("value", "age")
         .classed("active", true)
-        .text("Age (years)");
+        .text("Smokers (%)");
   
-      var obesityLabel = labelsGroup.append("text")
+      var healthcareLabel = labelsGroup.append("text")
         .attr("x", 0)
         .attr("y", 40)
+        .attr("value", "healthcare") // value to grab for event listener
+        .classed("inactive", true)
+        .text("Inadequate Healthcare (%)");
+
+        var obesityLabel = xLabelsGroup.append("text")
+        .attr("x", 0)
+        .attr("y", 60)
         .attr("value", "obesity") // value to grab for event listener
         .classed("inactive", true)
         .text("Obesity (%)");
 
 
- // append y axis
-    chartGroup.append("text")
-      .attr("transform", "rotate(-90)")
-      .attr("y", 0 - margin.left)
-      .attr("x", 0 - (height / 2))
-      .attr("dy", "1em")
-      .classed("axis-text", true)
-      .text("Income ($)");
+//  // append y axis
+//     chartGroup.append("text")
+//       .attr("transform", "rotate(-90)")
+//       .attr("y", 0 - margin.left)
+//       .attr("x", 0 - (height / 2))
+//       .attr("dy", "1em")
+//       .classed("axis-text", true)
+//       .text("Income ($)");
 
 
 
