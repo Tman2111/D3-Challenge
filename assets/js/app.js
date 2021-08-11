@@ -64,18 +64,8 @@ function renderAxes(newXScale, xAxis) {
   return xAxis;
 }
 
-// function used for updating xAxis var upon click on axis label
-function renderXAxes(newXScale, xAxis) {
-  var bottomAxis = d3.axisBottom(newXScale);
 
-  xAxis.transition()
-    .duration(1000)
-    .call(bottomAxis);
-
-  return xAxis;
-}
-
-// function used for updating xAxis var upon click on axis label
+// function used for updating YAxis var upon click on axis label
 function renderYAxes(newYScale, yAxis) {
   var leftAxis = d3.axisLeft(newYScale);
 
@@ -88,11 +78,20 @@ function renderYAxes(newYScale, yAxis) {
 
 
 // circles update move to new circles
-function renderCircles(circlesGroup, newXScale, chosenXAxis) {
+function renderXCircles(circlesGroup, newXScale, chosenXAxis) {
 
   circlesGroup.transition()
     .duration(1000)
     .attr("cx", d => newXScale(d[chosenXAxis]));
+
+  return circlesGroup;
+}
+
+function renderYCircles(circlesGroup, newYScale, chosenYAxis) {
+
+  circlesGroup.transition()
+    .duration(1000)
+    .attr("cy", d => newYScale(d[chosenYAxis]));
 
   return circlesGroup;
 }
