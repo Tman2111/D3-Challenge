@@ -143,6 +143,44 @@ var xAxis = chartGroup.append("g")
 chartGroup.append("g")
 .call(leftAxis);
 
+// intitial circles
+var circlesGroup = chartGroup.selectAll("circle")
+      .data(censusData)
+      .enter()
+      .append("circle")
+      .attr("cx", d => xLinearScale(d[chosenXAxis]))
+      .attr("cy", d => yLinearScale(d.income))
+      .attr("r", 20)
+      .attr("fill", "blue")
+      .attr("opacity", ".5");
+
+      // Groups for two x-axis labels
+      var labelsGroup = chartGroup.append("g")
+        .attr("transform", `translate(${width / 2}, ${height + 20})`);
+  
+      var ageLabel = labelsGroup.append("text")
+        .attr("x", 0)
+        .attr("y", 20)
+        .attr("value", "age") // value to grab for event listener
+        .classed("active", true)
+        .text("Age (years)");
+  
+      var obesityLabel = labelsGroup.append("text")
+        .attr("x", 0)
+        .attr("y", 40)
+        .attr("value", "obesity") // value to grab for event listener
+        .classed("inactive", true)
+        .text("Obesity (%)");
+
+        
+       
+
+
+
+
+
+
+
 
 
 
