@@ -24,7 +24,8 @@ var svg = d3
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
   // Initial Param
-var chosenXAxis = "age";
+var chosenXAxis = "smokes";
+var chosenYAxis = "age";
 
 // function to update x-scale var when click on axis label
 function xScale(censusData, chosenXAxis) {
@@ -39,6 +40,19 @@ function xScale(censusData, chosenXAxis) {
 
 }
 
+// function used for updating y-scale var upon click on axis label
+function yScale(censusData, chosenYAxis) {
+  // create scales
+  var yLinearScale = d3.scaleLinear()
+    .domain([d3.min(censusData, d => d[chosenYAxis]) * 0.8,
+    d3.max(censusData, d => d[chosenYAxis]) * 1.2
+    ])
+    .range([height, 0]);
+
+  return yLinearScale;
+
+}
+
 // function to update xAxis var upon click on axis label
 function renderAxes(newXScale, xAxis) {
   var bottomAxis = d3.axisBottom(newXScale);
@@ -48,6 +62,28 @@ function renderAxes(newXScale, xAxis) {
     .call(bottomAxis);
 
   return xAxis;
+}
+
+// function used for updating xAxis var upon click on axis label
+function renderXAxes(newXScale, xAxis) {
+  var bottomAxis = d3.axisBottom(newXScale);
+
+  xAxis.transition()
+    .duration(1000)
+    .call(bottomAxis);
+
+  return xAxis;
+}
+
+// function used for updating xAxis var upon click on axis label
+function renderYAxes(newYScale, yAxis) {
+  var leftAxis = d3.axisLeft(newYScale);
+
+  yAxis.transition()
+    .duration(1000)
+    .call(leftAxis);
+
+  return yAxis;
 }
 
 
@@ -172,7 +208,18 @@ var circlesGroup = chartGroup.selectAll("circle")
         .classed("inactive", true)
         .text("Obesity (%)");
 
-        
+
+ // append y axis
+    chartGroup.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x", 0 - (height / 2))
+      .attr("dy", "1em")
+      .classed("axis-text", true)
+      .text("Income ($)");
+
+
+
        
 
 
