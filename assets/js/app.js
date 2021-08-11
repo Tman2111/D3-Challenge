@@ -27,7 +27,7 @@ var svg = d3
 var chosenXAxis = "smokes";
 var chosenYAxis = "age";
 
-// function to update x-scale var when click on axis label
+// function to update x-scale variable when click on axis label
 function xScale(censusData, chosenXAxis) {
   // create scales
   var xLinearScale = d3.scaleLinear()
@@ -64,8 +64,7 @@ function renderAxes(newXScale, xAxis) {
   return xAxis;
 }
 
-
-// function used for updating YAxis var upon click on axis label
+// function to update YAxis var upon click on axis label
 function renderYAxes(newYScale, yAxis) {
   var leftAxis = d3.axisLeft(newYScale);
 
@@ -96,24 +95,60 @@ function renderYCircles(circlesGroup, newYScale, chosenYAxis) {
   return circlesGroup;
 }
 
-// function used for updating circles group with new tooltip
-function updateToolTip(chosenXAxis, circlesGroup) {
+// Update Circle Text group, transition to new circle
+function renderXCircleText(textCircles, newXScale, chosenXAxis) {
 
-  var label;
+  textCircles.transition()
+    .duration(1000)
+    .attr("x", d => newXScale(d[chosenXAxis]));
 
-  if (chosenXAxis === "age") {
-    label = "Age:";
-  }
-  else {
-    label = "Income:";
-  }
+  return textCircles;
+}
 
-  var toolTip = d3.tip()
-    .attr("class", "tooltip")
-    .offset([80, -60])
-    .html(function(d) {
-      return (`${d.state}<br>${label} ${d[chosenXAxis]}`);
-    });
+function renderYCircleText(textCircles, newYScale, chosenYAxis) {
+
+  textCircles.transition()
+    .duration(1000)
+    .attr("y", d => newYScale(d[chosenYAxis])+4);
+
+  return textCircles;
+}
+
+// New tooltip
+function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
+
+    var xlabel;
+    var ylabel;
+
+    if (chosenXAxis === "smokes") {
+        xlabel = "Smokers:"
+    }
+    else if (chosenXAxis === "healthcare") {
+        xlabel = "No Healthcare:"
+    }
+    else {
+        xlabel = "Obese:";
+    }
+
+
+    if (chosenYAxis === "age") {
+        ylabel = "Age:"
+    }
+    else if (chosenYAxis === "income") {
+        ylabel = "Income:"
+    }
+    else {
+        ylabel = "Poverty:"
+    }
+
+    var toolTip = d3.tip()
+        .attr("class", "tooltip")
+        .offset([40, 60])
+        .html(function (d) {
+            return (`<strong>${d.state}</strong>
+              <br>${xlabel} ${d[chosenXAxis]}
+              <br>${ylabel} ${d[chosenYAxis]}`);
+        });
 
   circlesGroup.call(toolTip);
 
@@ -229,4 +264,4 @@ var circlesGroup = chartGroup.selectAll("circle")
 
 
 
-
+})()
