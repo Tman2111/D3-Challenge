@@ -126,7 +126,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     else if (chosenXAxis === "healthcare") {
         xlabel = "No Healthcare:"
     }
-    else {
+    else if (chosenXaxis === "obesity"){
         xlabel = "Obese:";
     }
 
@@ -137,8 +137,8 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     else if (chosenYAxis === "income") {
         ylabel = "Income:"
     }
-    else {
-        ylabel = "Poverty:"
+    else if (chosenYAxis === "poverty"){
+      ylabel = "Poverty:"
     }
 
     var toolTip = d3.tip()
