@@ -259,6 +259,34 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
         .classed("inactive", true)
         .text("Obesity (%)");
 
+        // Groups for three y-axis labels
+
+        var yLabelsGroup = chartGroup.append("g")
+        .attr("transform", "rotate(-90)");
+
+    var ageLabel = yLabelsGroup.append("text")
+        .attr("y", 0 - margin.left + 15)
+        .attr("x", 0 - (height / 2))
+        .attr("value", "age") // value to grab for event listener
+        .classed("active", true)
+        .text("Age (Median)");
+
+    var incomeLabel = yLabelsGroup.append("text")
+        .attr("y", 0 - margin.left + 35)
+        .attr("x", 0 - (height / 2))
+        .attr("value", "income")
+        .classed("inactive", true)
+        .text("Houshold Income (Median)");
+
+    var povertyLabel = yLabelsGroup.append("text")
+        .attr("y", 0 - margin.left + 55)
+        .attr("x", 0 - (height / 2))
+        .attr("value", "poverty")
+        .classed("inactive", true)
+        .text("Poverty (%)");
+
+        
+
 
 //  // append y axis
 //     chartGroup.append("text")
