@@ -349,6 +349,69 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
             }
         });
 
+  // events listener for y-axis
+
+// y axis labels event listener
+    yLabelsGroup.selectAll("text")
+        .on("click", function () {
+            // get value of selection
+            var yValue = d3.select(this).attr("value");
+            if (yValue !== chosenYAxis) {
+
+                // replaces chosenXAxis with value
+                chosenYAxis = yValue;
+
+                // functions here found above csv import
+                // updates y scale for new data
+                yLinearScale = yScale(censusData, chosenYAxis);
+
+                // updates y axis with transition
+                yAxis = renderYAxes(yLinearScale, yAxis);
+
+                // updates circles and circle text with new y values
+                circlesGroup = renderYCircles(circlesGroup, yLinearScale, chosenYAxis);
+                textCircles = renderYCircleText(textCircles, yLinearScale, chosenYAxis);
+
+                // updates tooltips with new info
+                circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
+
+                // changes classes to change bold text
+                if (chosenYAxis === "income") {
+                    incomeLabel
+                        .classed("active", true)
+                        .classed("inactive", false);
+                    ageLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                    povertyLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                }
+                else if (chosenYAxis === "poverty") {
+                    incomeLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                    ageLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                    povertyLabel
+                        .classed("active", true)
+                        .classed("inactive", false);
+                }
+                else {
+                    incomeLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                    ageLabel
+                        .classed("active", true)
+                        .classed("inactive", false);
+                    povertyLabel
+                        .classed("active", false)
+                        .classed("inactive", true);
+                }
+            }
+        });
+})()
 
 //  // append y axis
 //     chartGroup.append("text")
@@ -371,4 +434,3 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 
 
 
-})()
