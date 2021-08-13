@@ -5,7 +5,7 @@ var svgHeight = 500;
 var margin = {
   top: 20,
   right: 40,
-  bottom: 80,
+  bottom: 220,
   left: 100
 };
 
@@ -17,7 +17,9 @@ var svg = d3
   .select("#scatter")
   .append("svg")
   .attr("width", svgWidth)
-  .attr("height", svgHeight);
+  .attr("height", svgHeight)
+  .attr("class", "chart")
+  ;
 
   // append SVG group
   var chartGroup = svg.append("g")
@@ -126,7 +128,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     else if (chosenXAxis === "healthcare") {
         xlabel = "No Healthcare:"
     }
-    else if (chosenXaxis === "obesity"){
+    else if (chosenXaxis === "obesity") {
         xlabel = "Obese:";
     }
 
@@ -137,7 +139,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
     else if (chosenYAxis === "income") {
         ylabel = "Income:"
     }
-    else if (chosenYAxis === "poverty"){
+    else if  (chosenYAxis === "poverty"){
       ylabel = "Poverty:"
     }
 
@@ -204,9 +206,9 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
 .call(bottomAxis);
 
   var yAxis = chartGroup.append("g")
-        .classed("y-axis", true)
-        // .attr("transform")
-        .call(leftAxis);
+.classed("y-axis", true)
+.attr("transform", `translate(0, ${width})`) 
+.call(leftAxis);
 
 // intitial circles
   var circlesGroup = chartGroup.append("g")
@@ -252,7 +254,7 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
         .classed("inactive", true)
         .text("Inadequate Healthcare (%)");
 
-        var obesityLabel = xLabelsGroup.append("text")
+        var obesityLabel = labelsGroup.append("text")
         .attr("x", 0)
         .attr("y", 60)
         .attr("value", "obesity") // value to grab for event listener
@@ -289,10 +291,12 @@ function updateToolTip(chosenXAxis, chosenYAxis, circlesGroup) {
   var circlesGroup = updateToolTip(chosenXAxis, chosenYAxis, circlesGroup);
   
   // events listener for x-axis
-  xLabelsGroup.selectAll("text")
+  console.log(labelsGroup.selectAll("text").node())
+  labelsGroup.selectAll("text")
         .on("click", function () {
             // get value of selection
             var xValue = d3.select(this).attr("value");
+            console.log(d3.select(this))
             if (xValue !== chosenXAxis) {
 
                 // replaces chosenXAxis with value
